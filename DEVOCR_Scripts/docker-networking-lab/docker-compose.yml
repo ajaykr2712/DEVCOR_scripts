@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  webserver:
+    image: nginx:latest
+    container_name: webserver
+    networks:
+      - labnet
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: client
+    networks:
+      - labnet
+    stdin_open: true
+    tty: true
+    depends_on:
+      - webserver
+    command: sh
+
+networks:
+  labnet:
+    driver: bridge
+    name: labnet

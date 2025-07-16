@@ -1,0 +1,22 @@
+FROM alpine:latest
+
+# Install networking tools
+RUN apk add --no-cache \
+    curl \
+    wget \
+    ping \
+    netcat-openbsd \
+    nmap \
+    tcpdump \
+    iperf3 \
+    drill
+
+# Add a simple test script
+COPY scripts/test-connectivity.sh /usr/local/bin/test-connectivity
+RUN chmod +x /usr/local/bin/test-connectivity
+
+# Set working directory
+WORKDIR /app
+
+# Keep container running
+CMD ["sh"]
