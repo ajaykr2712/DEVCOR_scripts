@@ -1,0 +1,47 @@
+# CSR1000v Basic Configuration for Terraform Lab
+# Day 4 - DEVCOR Scripts
+
+# EVE-NG Router Specifications:
+# - Model: CSR1000v 3.x
+# - CPU: 2 cores
+# - RAM: 4096 MB
+# - QEMU NIC: virtio-net-pci
+
+# Basic Configuration Commands:
+
+enable
+configure terminal
+
+# Set hostname
+hostname CSR4
+
+# Configure management interface
+interface gi1
+ip address 10.255.1.144 255.255.255.0
+description Connected to MGMT
+no shutdown
+exit
+
+# Create admin user with privilege 15 for Terraform authentication
+username admin privilege 15 secret cisco
+
+# Enable authentication for HTTP/HTTPS
+ip http authentication local
+
+# Enable HTTP and HTTPS servers for RESTCONF
+ip http server
+ip http secure-server
+
+# Enable RESTCONF
+restconf
+
+# Save configuration
+end
+write memory
+
+# Verification Commands:
+# show ip interface brief
+# show restconf
+# show ip http server status
+# show running-config | include username
+# show running-config | section ip http
